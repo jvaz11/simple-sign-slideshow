@@ -4,7 +4,7 @@ var app = angular.module('website', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'ng
 app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $routeParams, $location, $firebase, $log, GradientService) {
     $scope.$route = $route;
     $scope.$location = $location;
-    var INTERVAL = 6000;
+    var INTERVAL = 12000;
 
     $scope.$on('$routeChangeSuccess', function(ev, current, prev) {
 
@@ -17,17 +17,17 @@ app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $rou
         // color: GradientService.getGradient("Titanium").colors,
         color: "Titanium",
         src: "./images/image00.jpg",
-        headline: "Thank you Sophia for putting away the Amazon Fresh groceries!"
+        headline: "Next Thursday and Friday we'll be hosting several user meetups. Talk to Jenny if you'd like to help!"
     }, {
         id: "image01",
         color: "Sunrise",
         src: "./images/image01.jpg",
-        headline: "hello 2"
+        headline: "Be sure to vote for which movie you'd like to watch at Movie Night this Wednesday!"
     }, {
         id: "image02",
         color: "Pinky",
         src: "./images/image02.jpg",
-        headline: "hello 3"
+        headline: "Please check the fridge for expired food that you might have forgetten. Thanks! "
     }];
     $scope.colorVal = '';
     var colCount = 0;
@@ -577,24 +577,14 @@ app.animation('.slide-animation', function($window) {
             var startPoint = $window.innerWidth * 0.05,
                 tl = new TimelineLite();
 
-            tl.fromTo(element.find('.bg'), .5, {
-                    alpha: 0
-                }, {
-                    alpha: 1
-                })
-                .fromTo(element.find('.xlarge'), 1, {
-                    left: startPoint,
-                    alpha: 0
+            tl.fromTo(element.find('.title'), 1, {
+                    left: 50,
+                    alpha: 0,
+                    delay: .30
                 }, {
                     left: 50,
-                    alpha: 1
-                })
-                .fromTo(element.find('.title'), 1, {
-                    left: 50,
-                    alpha: 0
-                }, {
-                    left: 50,
-                    alpha: 1
+                    alpha: 1,
+                    delay: .30
                 })
                 .fromTo(element.find('.dateTime'), 1, {
                     left: 50,
@@ -611,10 +601,7 @@ app.animation('.slide-animation', function($window) {
                     left: 50,
                     alpha: 1,
                     onComplete: done
-                })
-
-            ;
-
+                });
         },
 
         leave: function(element, done) {
