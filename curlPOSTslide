@@ -1,4 +1,0 @@
-curl -X POST -d '{
-      “slides” : "",
-      "src" : "http://i.imgur.com/zcdzHup.jpg?1"
-    }' 'https://eventsboard.firebaseio.com/boards/-JsrWmm21vh4grLC-wRP.json'

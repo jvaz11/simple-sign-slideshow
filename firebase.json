@@ -1,5 +1,5 @@
 {
-  "firebase": "upcomingevents",
+  "firebase": "simplesign",
   "public": ".",
   "ignore": [
     "firebase.json",

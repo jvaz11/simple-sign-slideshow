@@ -1,11 +1,5 @@
-<!-- <div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides | orderBy:'datetime':false">
-    <div class="slide-animation flex-contain" slide-animation background-filler>
-        <div class="title" titleresizer><span>{{slide.headline}}</span></div>
-    </div>
-</div>
- -->
-<div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides | orderBy:'datetime':false">
-    <mytransclude>
-        <div class="title" titleresizer><span>{{slide.headline}}</span></div>
-    </mytransclude>
+<div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides">
+    <slide-container-styler>
+        <div class="title"><span>{{slide.headline}}</span></div>
+    </slide-container-styler>
 </div>

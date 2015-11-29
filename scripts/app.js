@@ -1,121 +1,31 @@
-var app = angular.module('website', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'ngResource', 'firebase', 'toaster', 'ui.bootstrap']);
+var app = angular.module('website', ['ngAnimate', 'ngRoute', 'firebase']);
 
+app.controller('MainCtrl', function($scope, $timeout, $firebaseArray, GradientService, FBURL) {
 
-app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $routeParams, $location, $firebase, $log, GradientService) {
-    $scope.$route = $route;
-    $scope.$location = $location;
-    var INTERVAL = 12000;
+    var ref = new Firebase(FBURL + "/slides");
 
-    $scope.$on('$routeChangeSuccess', function(ev, current, prev) {
-
-        var ref = new Firebase("https://eventsboard.firebaseio.com");
-
-
-    });
-    var slides = [{
-        id: "image00",
-        // color: GradientService.getGradient("Titanium").colors,
-        color: "Titanium",
-        src: "./images/image00.jpg",
-        headline: "Next Thursday and Friday we'll be hosting several user meetups. Talk to Jenny if you'd like to help!"
-    }, {
-        id: "image01",
-        color: "Sunrise",
-        src: "./images/image01.jpg",
-        headline: "Be sure to vote for which movie you'd like to watch at Movie Night this Wednesday!"
-    }, {
-        id: "image02",
-        color: "Pinky",
-        src: "./images/image02.jpg",
-        headline: "Please check the fridge for expired food that you might have forgetten. Thanks! "
-    }];
-    $scope.colorVal = '';
-    var colCount = 0;
-    var colorArr = ['redBg', 'greenBg', 'blueBg', 'whiteBg'];
-    var currColor = '';
-    $scope.displayLoadingIndicator = false;
-    $scope.slides = slides;
-    $scope.colorVal = colorArr[0];
-
-
-    function setCurrentSlideIndex(index) {
-        $scope.currentIndex = index;
-        // console.log("set current slide");
-    }
+    $scope.slides = $firebaseArray(ref);
 
     function isCurrentSlideIndex(index) {
         return $scope.currentIndex === index;
     }
 
-
-
-    $scope.test3 = function() {
-        colCount++;
-        if (colCount < colorArr.length) {
-            $scope.colorVal = colorArr[colCount];
-        } else {
-            colCount = 0;
-            $scope.colorVal = colorArr[colCount];
-        }
-    }
+    var INTERVAL = 12000;
 
     function nextSlide() {
         $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
-        $scope.$apply(function() {
-            colCount++;
-            if (colCount < colorArr.length) {
-                $scope.colorVal = colorArr[colCount];
-            } else {
-                colCount = 0;
-                $scope.colorVal = colorArr[colCount];
-            }
-        });
         $timeout(nextSlide, INTERVAL);
-    }
-
-    function setCurrentAnimation(animation) {
-        $scope.currentAnimation = animation;
-    }
-
-    function isCurrentAnimation(animation) {
-        return $scope.currentAnimation === animation;
     }
 
     function loadSlides() {
-        // QueueService.loadManifest(slides);
         $timeout(nextSlide, INTERVAL);
     }
 
-    $scope.$on('queueProgress', function(event, queueProgress) {
-        $scope.$apply(function() {
-            $scope.progress = queueProgress.progress * 100;
-        });
-    });
-
-    $scope.$on('queueComplete', function(event, slides) {
-        $scope.$apply(function() {
-            $scope.slides = slides;
-            $scope.loaded = true;
-
-            $timeout(nextSlide, INTERVAL);
-        });
-    });
-
-    $scope.progress = 0;
-    $scope.loaded = true;
     $scope.currentIndex = 0;
-    $scope.currentAnimation = 'fade-in-animation';
 
-    $scope.setCurrentSlideIndex = setCurrentSlideIndex;
     $scope.isCurrentSlideIndex = isCurrentSlideIndex;
-    $scope.setCurrentAnimation = setCurrentAnimation;
-    $scope.isCurrentAnimation = isCurrentAnimation;
 
     loadSlides();
-
-
-
-
 
 });
 
@@ -125,47 +35,16 @@ app.config(function($routeProvider) {
             templateUrl: 'display.html',
             controller: 'MainCtrl'
         })
-        .when('/display/:boardid', {
+        .when('/display/:collectionId', {
             templateUrl: 'display.html',
             controller: 'MainCtrl'
-        })
-        .when('/admin', {
-            templateUrl: 'views/admin.html',
-            controller: 'EventController'
-        })
-        .when('/post', {
-            templateUrl: 'views/post.html',
-            controller: 'EventController'
-        })
-        .when('/edit/:taskId', {
-            templateUrl: 'views/edit.html',
-            controller: 'TaskController'
         })
         .otherwise({
             redirectTo: '/'
         });
-})
-
-
-app.factory('QueueService', function($rootScope) {
-    var queue = new createjs.LoadQueue(true);
-
-    function loadManifest(manifest) {
-        queue.loadManifest(manifest);
-
-        queue.on('progress', function(event) {
-            $rootScope.$broadcast('queueProgress', event);
-        });
-
-        queue.on('complete', function() {
-            $rootScope.$broadcast('queueComplete', manifest);
-        });
-    }
-
-    return {
-        loadManifest: loadManifest
-    }
 });
+
+app.constant('FBURL', 'https://simplesign.firebaseio.com/');
 
 app.factory('GradientService', function() {
     var gradients = [{
@@ -616,48 +495,10 @@ app.animation('.slide-animation', function($window) {
 });
 
 
-app.directive('titleresizer', function($window) {
-    return function(scope, element, attrs) {
-        var resizeBG = function() {
-            var bgwidth = element.width();
-            var bgheight = element.height();
-
-            var winwidth = $window.innerWidth;
-            var winheight = $window.innerHeight;
-
-            var widthratio = winwidth / bgwidth;
-            var heightratio = winheight / bgheight;
-
-            var widthdiff = heightratio * bgwidth;
-            var heightdiff = widthratio * bgheight;
-
-            if (heightdiff > winheight) {
-                element.css({
-                    fontSize: '153px'
-                });
-            } else if (heightdiff < winheight) {
-                element.css({
-                    fontSize: '153px'
-
-                });
-            }
-        };
-
-
-
-        var windowElement = angular.element($window);
-        windowElement.resize(resizeBG);
-
-        element.bind('load', function() {
-            resizeBG();
-        });
-    }
-});
-
-app.directive('mytransclude', function(GradientService) {
+app.directive('slideContainerStyler', function(GradientService) {
     var directive = {};
 
-    directive.restrict = 'E'; /* restrict this directive to elements */
+    directive.restrict = 'E';
 
     function getGradientColors(color) {
         return GradientService.getGradient(color).colors;
