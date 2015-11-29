@@ -4,7 +4,7 @@ var app = angular.module('website', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'ng
 app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $routeParams, $location, $firebase, $log, GradientService) {
     $scope.$route = $route;
     $scope.$location = $location;
-    var INTERVAL = 7000;
+    var INTERVAL = 6000;
 
     $scope.$on('$routeChangeSuccess', function(ev, current, prev) {
 
@@ -14,29 +14,19 @@ app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $rou
     });
     var slides = [{
         id: "image00",
-        color: GradientService.getGradient("Titanium"),
+        color: GradientService.getGradient("Titanium").colors,
         src: "./images/image00.jpg",
         headline: "Thank you Sophia for putting away the Amazon Fresh groceries!"
     }, {
         id: "image01",
-        color: "blueBg",
+        color: GradientService.getGradient("Sunrise").colors,
         src: "./images/image01.jpg",
         headline: "hello 2"
     }, {
         id: "image02",
-        color: "greenBg",
+        color: GradientService.getGradient("Pinky").colors,
         src: "./images/image02.jpg",
         headline: "hello 3"
-    }, {
-        id: "image03",
-        color: "blue",
-        src: "./images/image03.jpg",
-        headline: "hello 4"
-    }, {
-        id: "image04",
-        color: "purple",
-        src: "./images/image04.jpg",
-        headline: "hello 5"
     }];
     $scope.colorVal = '';
     var colCount = 0;
@@ -572,7 +562,7 @@ app.factory('GradientService', function() {
     function getGradient(name) {
         return gradients.filter(function(gradient) {
             return gradient.name === name;
-        })[0].colors;
+        })[0];
     }
 
     return {
@@ -674,4 +664,28 @@ app.directive('titleresizer', function($window) {
             resizeBG();
         });
     }
+});
+
+app.directive('mytransclude', function(GradientService) {
+    var directive = {};
+
+    directive.restrict = 'E'; /* restrict this directive to elements */
+    // directive.transclude = true;
+    // directive.template = ;
+
+
+    directive.compile = function(element, attributes) {
+
+        var linkFunction = function($scope, element, attributes) {
+            function buildGradient(color1, color2) {
+                return "background: " + color1 + "; background: -webkit-linear-gradient(to top left, " + color1 + ", " + color2 + "); background: linear-gradient(to top left, " + color1 + ", " + color2 + ");";
+            }
+            element.html("<div style='" + buildGradient($scope.slide.color[0], $scope.slide.color[1]) + "' class='slide-animation flex-contain " + $scope.slide.color + "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>" + $scope.slide.headline + "</span></div></span></div></div>");
+        }
+
+        return linkFunction;
+    }
+
+    return directive;
+
 });

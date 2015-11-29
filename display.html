@@ -1,17 +1,11 @@
-
-<!-- 
-<div class="outer" slide-animation >
-<div class ="flex-contain">
-  <div class="text-center" style="top: 50%"ng-show="displayLoadingIndicator"><img src="images/ripple.gif" alt="Loading slides"><br/><span class="loadingText">Loading Events</span></div>
-  <h1>It doesn't look like you have any events coming up! Perhaps you should add some?</h1>
-</div>  
-</div> -->
-
-
-    <div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides | orderBy:'datetime':false">
-       
-        <div ng-class="slide.color" class="slide-animation flex-contain" slide-animation>
-            <!-- <img class="bg" bg-image ng-src="data:{{slide.format}};base64,{{slide.src}}"> -->
-            <div class="title" titleresizer><span>{{slide.headline}}</span></div>
-        </div>
+<!-- <div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides | orderBy:'datetime':false">
+    <div class="slide-animation flex-contain" slide-animation background-filler>
+        <div class="title" titleresizer><span>{{slide.headline}}</span></div>
     </div>
+</div>
+ -->
+<div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides | orderBy:'datetime':false">
+    <mytransclude>
+        <div class="title" titleresizer><span>{{slide.headline}}</span></div>
+        </mytransclude>
+</div>
