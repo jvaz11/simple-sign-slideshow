@@ -1,4 +1,4 @@
- @import url(http://fonts.googleapis.com/css?family=Lato:300|Open+Sans:300,500,600,700,800);
+ @import url(http://fonts.googleapis.com/css?family=Lato:300|Open+Sans:300,500,600,700,800|Oxygen:300,500,600,700,800);
 
 
 html {
@@ -100,7 +100,8 @@ div {
     line-height: 1.25em;
     color: #fff;
     text-shadow: rgba(0, 0, 0, 0.0980392) 0px .02em 0px;
-         font-family: "open sans", helvetica, sans-serif;
+         font-family: "Open Sans", helvetica, sans-serif;
+         /*font-family: "Oxygen", helvetica, sans-serif;*/
      font-weight: 700;
 
 }
