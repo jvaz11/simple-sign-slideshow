@@ -4,7 +4,7 @@ var app = angular.module('website', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'ng
 app.controller('MainCtrl', function($scope, $timeout, QueueService, $route, $routeParams, $location, $firebase, $log, GradientService) {
     $scope.$route = $route;
     $scope.$location = $location;
-    var INTERVAL = 6000;
+    var INTERVAL = 60000;
 
     $scope.$on('$routeChangeSuccess', function(ev, current, prev) {
 
@@ -670,8 +670,6 @@ app.directive('mytransclude', function(GradientService) {
     var directive = {};
 
     directive.restrict = 'E'; /* restrict this directive to elements */
-    // directive.transclude = true;
-    // directive.template = ;
 
 
     directive.compile = function(element, attributes) {
