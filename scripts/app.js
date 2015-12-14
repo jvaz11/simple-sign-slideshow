@@ -1,8 +1,10 @@
 var app = angular.module('website', ['ngAnimate', 'ngRoute', 'firebase']);
 
-app.controller('MainCtrl', function($scope, $timeout, $firebaseArray, GradientService, FBURL) {
+app.controller('MainCtrl', function($scope, $timeout, $firebaseArray, GradientService, FBURL, $routeParams) {
 
-    var ref = new Firebase(FBURL + "/slides");
+    var accountId = $routeParams.accountId;
+
+    var ref = new Firebase("https://simplesign.firebaseio.com/accounts/" + accountId + "/slides");
 
     $scope.slides = $firebaseArray(ref);
 
@@ -35,7 +37,7 @@ app.config(function($routeProvider) {
             templateUrl: 'display.html',
             controller: 'MainCtrl'
         })
-        .when('/display/:collectionId', {
+        .when('/display/:accountId', {
             templateUrl: 'display.html',
             controller: 'MainCtrl'
         })
@@ -44,7 +46,7 @@ app.config(function($routeProvider) {
         });
 });
 
-app.constant('FBURL', 'https://simplesign.firebaseio.com/');
+app.constant('FBURL', 'https://simplesign.firebaseio.com');
 
 app.factory('GradientService', function() {
     var gradients = [{
@@ -445,8 +447,20 @@ app.factory('GradientService', function() {
         })[0];
     }
 
+    function getGradientByName(name) {
+        return gradients.filter(function(gradient) {
+            return gradient.name === name;
+        })[0];
+    }
+
+    function getRandomGradient() {
+        return gradients[Math.floor(Math.random() * gradients.length)].colors;
+    }
+
     return {
-        getGradient: getGradient
+        getGradient: getGradient,
+        getGradientByName: getGradientByName,
+        getRandomGradient: getRandomGradient
     }
 });
 
@@ -500,20 +514,13 @@ app.directive('slideContainerStyler', function(GradientService) {
 
     directive.restrict = 'E';
 
-    function getGradientColors(color) {
-        return GradientService.getGradient(color).colors;
-    }
-
     directive.compile = function(element, attributes) {
-
+        var colors = GradientService.getRandomGradient();
+        function getBackgroundStyle(colors){
+            return "\"background: linear-gradient(to top left," + colors[0] + ", " + colors[1] + ");\"";
+        }
         var linkFunction = function($scope, element, attributes) {
-            function buildGradient(gradient) {
-                var colors = getGradientColors(gradient);
-                var color1 = colors[0];
-                var color2 = colors[1];
-                return "background: " + color1 + "; background: -webkit-linear-gradient(to top left, " + color1 + ", " + color2 + "); background: linear-gradient(to top left, " + color1 + ", " + color2 + ");";
-            }
-            element.html("<div style='" + buildGradient($scope.slide.color) + "' class='slide-animation flex-contain " + $scope.slide.color + "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>" + $scope.slide.headline + "</span></div></span></div></div>");
+            element.html("<div style="+getBackgroundStyle($scope.slide.colors)+" class='slide-animation flex-contain "+ "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>" + $scope.slide.headline + "</span></div></span></div></div>");
         }
 
         return linkFunction;
