@@ -516,11 +516,35 @@ app.directive('slideContainerStyler', function(GradientService) {
 
     directive.compile = function(element, attributes) {
         var colors = GradientService.getRandomGradient();
-        function getBackgroundStyle(colors){
+
+        function getBackgroundStyle(colors) {
             return "\"background: linear-gradient(to top left," + colors[0] + ", " + colors[1] + ");\"";
         }
         var linkFunction = function($scope, element, attributes) {
-            element.html("<div style="+getBackgroundStyle($scope.slide.colors)+" class='slide-animation flex-contain "+ "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>" + $scope.slide.headline + "</span></div></span></div></div>");
+            element.html("<div style=" + getBackgroundStyle($scope.slide.colors) + " class='slide-animation flex-contain " + "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>" + $scope.slide.headline + "</span></div></span></div></div>");
+        }
+
+        return linkFunction;
+    }
+
+    return directive;
+
+});
+
+app.directive('placeholderSlide', function(GradientService) {
+    var directive = {};
+
+    directive.restrict = 'E';
+
+    directive.compile = function(element, attributes) {
+        
+
+        function getPlaceholderBackground(colors) {
+            return "\"background: linear-gradient(to top left,#457fca,#5691c8);\"";
+        }
+
+        var linkFunction = function($scope, element, attributes) {
+            element.html("<div style=" + getPlaceholderBackground() + " class='slide-animation flex-contain " + "' slide-animation> <div class='title' titleresizer><span> <div class='title' titleresizer><span>You don't have any signs right now. You should add one!</span></div></span></div></div>");
         }
 
         return linkFunction;

@@ -1,4 +1,9 @@
-<div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-repeat="slide in slides">
+<div class="slide slide-animation outer" ng-show="slides.length === 0">
+    <placeholder-slide>
+        <div class="title"><span></span></div>
+    </placeholder-slide>
+</div>
+<div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-hide="slides.length === 0" ng-repeat="slide in slides | orderBy:'-'">
     <slide-container-styler>
         <div class="title"><span>{{slide.headline}}</span></div>
     </slide-container-styler>
