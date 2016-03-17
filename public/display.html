@@ -1,7 +1,5 @@
-<div class="slide slide-animation outer" ng-show="slides.length === 0">
-    <placeholder-slide>
-        <div class="title"><span></span></div>
-    </placeholder-slide>
+<div class="slide slide-animation outer empty-state" ng-show="slides.length === 0">
+     <img alt="No, he'll be an engineer." src="https://d1e3b9cxfi9rtk.cloudfront.net/support-screens/no-signs.png" />
 </div>
 <div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-hide="slides.length === 0" ng-repeat="slide in slides | orderBy:'-'">
     <slide-container-styler>

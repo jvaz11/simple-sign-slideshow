@@ -38,3 +38,13 @@
      color: #fff;
      text-shadow: rgba(0, 0, 0, 0.0980392) 0px .02em 0px;
  }
+
+.empty-state {
+    display: flex;
+    justify-content: center;
+    /* align horizontal */
+    align-items: center;
+    /* align vertical */
+    border: 1px solid green;
+   
+}

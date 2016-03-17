@@ -12,7 +12,7 @@ app.controller('MainCtrl', function($scope, $timeout, $firebaseArray, GradientSe
         return $scope.currentIndex === index;
     }
 
-    var INTERVAL = 12000;
+    var INTERVAL = 4500;
 
     function nextSlide() {
         $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;

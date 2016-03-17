@@ -1,8 +1,9 @@
 {
-  "firebase": "simplesign",
-  "public": ".",
+  "firebase": "simplesign-slideshow",
+  "public": "public",
   "ignore": [
     "firebase.json",
+    "**/.*",
     "**/node_modules/**"
   ]
 }
