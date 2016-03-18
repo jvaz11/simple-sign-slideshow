@@ -1,5 +1,10 @@
-<div class="slide slide-animation outer empty-state" ng-show="slides.length === 0">
-     <img alt="No, he'll be an engineer." src="https://d1e3b9cxfi9rtk.cloudfront.net/support-screens/no-signs.png" />
+<div class="slide slide-animation outer empty-state">
+    <div class="text-center" style="" ng-show="displayLoadingIndicator" ng-hide="slides.length === 0">
+        <div class='container'>
+            <i class='preloader'></i>
+        </div>
+    </div>
+    <img ng-show="slides.length === 0" alt="No, he'll be an engineer." src="https://d1e3b9cxfi9rtk.cloudfront.net/support-screens/no-signs.png" />
 </div>
 <div class="slide slide-animation outer" ng-if="isCurrentSlideIndex($index)" ng-hide="slides.length === 0" ng-repeat="slide in slides | orderBy:'-'">
     <slide-container-styler>

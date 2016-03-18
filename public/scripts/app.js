@@ -6,13 +6,29 @@ app.controller('MainCtrl', function($scope, $timeout, $firebaseArray, GradientSe
 
     var ref = new Firebase("https://simplesign.firebaseio.com/accounts/" + accountId + "/slides");
 
-    $scope.slides = $firebaseArray(ref);
+    var slides = $firebaseArray(ref);
 
+    // loading indicator
+    $scope.displayLoadingIndicator = true;
+    console.log('show loading: ', $scope.displayLoadingIndicator);
+
+    slides.$loaded()
+        .then(function(x) {
+            // $scope.displayLoadingIndicator = false;
+            console.log('show loading: ', $scope.displayLoadingIndicator);
+            $scope.slides = slides;
+            x === slides; // true
+        })
+        .catch(function(error) {
+            console.log("Error:", error);
+        });
+
+    // slideshow
     function isCurrentSlideIndex(index) {
         return $scope.currentIndex === index;
     }
 
-    var INTERVAL = 4500;
+    var INTERVAL = 50000;
 
     function nextSlide() {
         $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
@@ -537,7 +553,7 @@ app.directive('placeholderSlide', function(GradientService) {
     directive.restrict = 'E';
 
     directive.compile = function(element, attributes) {
-        
+
 
         function getPlaceholderBackground(colors) {
             return "\"background: linear-gradient(to top left,#457fca,#5691c8);\"";
